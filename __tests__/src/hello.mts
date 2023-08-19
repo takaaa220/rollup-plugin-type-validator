@@ -1,4 +1,4 @@
-import { initValidator } from "../../src/types.mjs";
+import { initValidator } from "../../src/plugin/types.mjs";
 
 const validate = initValidator<{
   s: string;

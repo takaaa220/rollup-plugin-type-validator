@@ -2,9 +2,10 @@ import { rollup } from "rollup";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
-import typeGenerator from "../src/index.mjs";
+import typeGenerator from "../src/plugin/index.mjs";
 import typescript from "rollup-plugin-typescript2";
-import { unlinkSync, writeFileSync } from "fs";
+import alias from "@rollup/plugin-alias";
+import { unlinkSync } from "fs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -16,15 +17,24 @@ describe("integrations", () => {
     beforeAll(async () => {
       const res = await rollup({
         input: join(__dirname, "src/index.mts"),
-        output: {
-          format: "esm",
-        },
-        plugins: [typeGenerator(), typescript()],
+        plugins: [
+          typeGenerator(),
+          alias({
+            entries: [
+              {
+                find: "rollup-plugin-type-validator/runtime",
+                replacement: join(__dirname, "../src/runtime/index.mts"),
+              },
+            ],
+          }),
+          typescript(),
+        ],
       });
 
-      const { output } = await res.generate({ format: "esm" });
-
-      writeFileSync(generatedFilePath, output[0].code, "utf-8");
+      await res.write({
+        format: "esm",
+        file: generatedFilePath,
+      });
 
       const { main } = await import(generatedFilePath);
       mainFunc = main;
