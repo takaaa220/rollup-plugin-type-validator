@@ -1,7 +1,7 @@
 import { hello } from "./hello.mjs";
 
-export function main() {
-  const res = hello("aaa");
+export function main(v: unknown) {
+  const res = hello(v);
 
-  console.log(res);
+  return res;
 }
