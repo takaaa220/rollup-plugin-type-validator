@@ -22,6 +22,14 @@ describe("createValidatorInner", () => {
       `["a", "c", 1 | 2 | 3]`,
       `validateTuple([validateConst("a"), validateConst("c"), validateUnion([validateConst(3), validateConst(1), validateConst(2)])])`,
     ],
+    [
+      `{ a: string } & { b: string }`,
+      `validateIntersection([validateObject({ a: validateString }), validateObject({ b: validateString })])`,
+    ],
+    [
+      `string & { _: "T" }`,
+      `validateIntersection([validateString, validateObject({ _: validateConst("T") })])`,
+    ],
   ])("%s", (input, expected) => {
     const project = new Project({
       useInMemoryFileSystem: true,

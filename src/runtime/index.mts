@@ -15,6 +15,10 @@ export const validateUnion =
   (validators: ((value: unknown) => boolean)[]) => (value: unknown) =>
     validators.some((validator) => validator(value));
 
+export const validateIntersection =
+  (validators: ((value: unknown) => boolean)[]) => (value: unknown) =>
+    validators.every((validator) => validator(value));
+
 export const validateTuple =
   (validators: ((value: unknown) => boolean)[]) => (value: unknown) =>
     Array.isArray(value) &&
@@ -28,7 +32,8 @@ export const validateArray =
 export const validateObject = (schema: object) => (value: unknown) =>
   typeof value === "object" &&
   value !== null &&
-  Object.keys(value).every((key) => key in schema) &&
+  // TODO: comment-in
+  // Object.keys(value).every((key) => key in schema) &&
   Object.entries(schema).every(([key, validator]) =>
     validator((value as any)[key])
   );

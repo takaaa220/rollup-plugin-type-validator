@@ -7,6 +7,8 @@ export const ValidatorFunctions = {
   validateConst: (v: string) => `validateConst(${v})`,
   validateOptional: (v: string) => `validateOptional(${v})`,
   validateUnion: (v: string[]) => `validateUnion([${v.join(", ")}])`,
+  validateIntersection: (v: string[]) =>
+    `validateIntersection([${v.join(", ")}])`,
   validateTuple: (v: string[]) => `validateTuple([${v.join(", ")}])`,
   validateArray: (v: string) => `validateArray(${v})`,
   validateObject: (v: { key: string; value: string }[]) =>
@@ -36,6 +38,12 @@ export function createValidatorInner(type: Type): string {
   if (type.isUnion()) {
     return ValidatorFunctions.validateUnion(
       type.getUnionTypes().map(createValidatorInner)
+    );
+  }
+
+  if (type.isIntersection()) {
+    return ValidatorFunctions.validateIntersection(
+      type.getIntersectionTypes().map(createValidatorInner)
     );
   }
 
