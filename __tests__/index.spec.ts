@@ -51,12 +51,14 @@ describe("integrations", () => {
         e: "a",
         a: ["a", 1],
         ax: true,
+        alias: "hello",
       },
       {
         s: "",
         n: 0,
         a: [],
         ax: true,
+        alias: undefined,
       },
     ])("ok: %j", (input) => {
       const res = mainFunc(input);
@@ -72,12 +74,14 @@ describe("integrations", () => {
         e: "a",
         a: ["a", 1],
         ax: true,
+        alias: "hello",
       },
       {
         s: "sss",
         n: 1,
         a: [true],
         ax: false,
+        alias: undefined,
       },
     ])("ng: %j", (input) => {
       const res = mainFunc(input);
