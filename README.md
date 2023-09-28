@@ -10,8 +10,8 @@ This library is inspired by https://github.com/vedantroy/typecheck.macro.
 
 ```typescript
 const validate = initValidator<number>;
-validate(3); // { ok: true, value: 3 }
 
+validate(3); // { ok: true, value: 3 }
 validate("3"); // { ok: false, error: ValidationError(...) }
 ```
 
